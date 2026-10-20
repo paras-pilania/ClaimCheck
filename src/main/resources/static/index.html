@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClaimCheck – Claim Review Dashboard</title>
+  <meta name="description" content="Educational healthcare reimbursement claim-review prototype. Synthetic data only.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5fa5'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/" aria-label="ClaimCheck home">
+        <span class="brand-mark" aria-hidden="true">✓</span>
+        <span class="brand-name">ClaimCheck</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="dashboard">Dashboard</a>
+        <a href="#/new" data-nav="new">New claim</a>
+      </nav>
+      <button type="button" class="btn btn-ai" id="open-ai-btn">
+        <span aria-hidden="true">✦</span> Extract bill with AI
+      </button>
+    </div>
+  </header>
+
+  <div class="demo-banner" role="note">
+    <strong>Educational prototype.</strong> Synthetic data only &mdash; never enter real patient information.
+    All rules, including the 30-day submission deadline, are <strong>fictional</strong>.
+  </div>
+
+  <main id="app" class="container" tabindex="-1"></main>
+
+  <footer class="footer container">
+    <p>
+      <strong>REVIEWED</strong> means the internal review step is finished. It does <strong>not</strong> mean an
+      insurer approved or will pay the claim. Amounts are calculated by the Java backend; AI only suggests values.
+    </p>
+  </footer>
+
+  <!-- Toasts -->
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Generic confirmation dialog (optionally with a note) -->
+  <dialog id="confirm-dialog" class="dialog" aria-labelledby="confirm-title">
+    <form method="dialog" id="confirm-form" class="dialog-body" novalidate>
+      <h2 id="confirm-title"></h2>
+      <p id="confirm-message" class="muted"></p>
+      <div id="confirm-note-wrap" class="field" hidden>
+        <label for="confirm-note" id="confirm-note-label">Note</label>
+        <textarea id="confirm-note" rows="3" maxlength="500"></textarea>
+        <p class="field-error" id="confirm-note-error" hidden></p>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="confirm-ok">Confirm</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- AI extraction dialog -->
+  <dialog id="ai-dialog" class="dialog dialog-wide" aria-labelledby="ai-title">
+    <form id="ai-form" class="dialog-body" novalidate>
+      <h2 id="ai-title"><span aria-hidden="true">✦</span> Extract bill with AI</h2>
+      <p class="muted">
+        Paste the text of a bill. Gemini suggests claim fields, which are loaded into the normal claim form for
+        you to review and edit. <strong>Nothing is saved until you submit the form.</strong>
+      </p>
+      <p class="notice notice-info">
+        The pasted text is sent to the Gemini API through the Spring Boot server. Use synthetic bill text only.
+      </p>
+      <div class="field">
+        <label for="ai-text">Bill text</label>
+        <textarea id="ai-text" rows="12" maxlength="10000" placeholder="Paste synthetic bill text here…"></textarea>
+        <div class="field-row-between">
+          <button type="button" class="btn btn-link" id="ai-sample-btn">Insert synthetic sample</button>
+          <span class="muted small" id="ai-count">0 / 10000</span>
+        </div>
+      </div>
+      <div id="ai-error" class="notice notice-error" role="alert" hidden></div>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" id="ai-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="ai-submit">Extract fields</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

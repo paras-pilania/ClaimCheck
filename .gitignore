@@ -1,0 +1,32 @@
+# Build output
+target/
+*.class
+*.jar
+*.war
+
+# Logs
+*.log
+logs/
+
+# Editors / IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.DS_Store
+Thumbs.db
+*.swp
+
+# Environment files and secrets
+.env
+.env.*
+*.env
+application-local.properties
+application-*.properties
+!application.properties
+*.pem
+*.key
+secrets/
